@@ -1,5 +1,10 @@
-FROM adoptopenjdk/openjdk11:jdk-11.0.1.13-alpine-slim
-COPY build/distributions/http4k-todo-backend-1.0-SNAPSHOT.zip todobackend.zip
-RUN unzip todobackend.zip
+FROM gradle:7.5.1-jdk11 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
+
+FROM eclipse-temurin:11-jdk-jammy as run
 EXPOSE 8000
-CMD http4k-todo-backend-1.0-SNAPSHOT/bin/http4k-todo-backend
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/distributions/http4k-todo-backend-1.0-SNAPSHOT /app/
+ENTRYPOINT /app/bin/http4k-todo-backend
