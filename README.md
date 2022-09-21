@@ -1,7 +1,10 @@
-# http4k-todo-backend
-
-[![build status](https://travis-ci.org/http4k/http4k-todo-backend.svg?branch=master)](https://travis-ci.org/http4k/http4k-todo-backend.svg?branch=master)
+# http4k-todo-backend for the Servirtium project
 
 [Http4k](http://http4k.org) implementation of http://www.todobackend.com
 
-[See the tests](http://www.todobackend.com/specs/index.html?https://http4k-todo-backend.herokuapp.com) running against the Heroku deployment of this app.
+Launch this API without cloning:
+
+```
+docker build git@github.com:servirtium/todobackend-for-compatibility-kit.git#master -t todobackend-api-for-servirtium-development
+docker run -d -p 8000:8000 todobackend-api-for-servirtium-development
+```
