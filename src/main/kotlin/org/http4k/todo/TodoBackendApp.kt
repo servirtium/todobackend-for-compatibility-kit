@@ -25,7 +25,7 @@ import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 fun main(args: Array<String>) {
-    val port = if (args.isNotEmpty()) args[0] else "8000"
+    val port = if (args.isNotEmpty()) args[0] else "54321"
     val baseUrl = if (args.size > 1) args[1] else "http://localhost:$port"
     val todos = TodoDatabase(baseUrl)
 
