@@ -10,8 +10,6 @@ import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Status.Companion.OK
-import org.http4k.core.Status.Companion.CREATED
-import org.http4k.core.Status.Companion.NO_CONTENT
 import org.http4k.core.then
 import org.http4k.core.with
 import org.http4k.filter.CorsPolicy.Companion.UnsafeGlobalPermissive
@@ -27,7 +25,7 @@ import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 fun main(args: Array<String>) {
-    val port = if (args.isNotEmpty()) args[0] else "54321"
+    val port = if (args.isNotEmpty()) args[0] else "8000"
     val baseUrl = if (args.size > 1) args[1] else "http://localhost:$port"
     val todos = TodoDatabase(baseUrl)
 
@@ -46,7 +44,7 @@ fun main(args: Array<String>) {
             },
             "/" bind GET to { _: Request -> Response(OK).with(todoListLens of todos.all()) },
             "/" bind POST to { req: Request ->
-                Response(CREATED).with(
+                Response(OK).with(
                     todoLens of todos.save(
                         null,
                         todoLens(req)
@@ -64,7 +62,7 @@ fun main(args: Array<String>) {
             "/{id:.+}" bind DELETE to { req: Request ->
                 todos.delete(idLens(req))?.let { Response(OK).with(todoLens of it) } ?: Response(NOT_FOUND)
             },
-            "/" bind DELETE to { _: Request -> Response(NO_CONTENT).with(todoListLens of todos.clear()) }
+            "/" bind DELETE to { _: Request -> Response(OK).with(todoListLens of todos.clear()) }
         ))
         .asServer(Undertow(port.toInt())).start().block()
 }
